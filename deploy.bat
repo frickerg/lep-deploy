@@ -35,7 +35,7 @@ IF EXIST lep-backend (
 printf "1) CLONING FROM REPOSITORY\n\n"
 
 sleep 1
-git clone https://gitlab.ti.bfh.ch/fricg2/lep-backend.git
+git clone git@gitlab.ti.bfh.ch:fricg2/lep-backend.git
 cd lep-backend
 
 sleep 1
