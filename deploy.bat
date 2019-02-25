@@ -27,10 +27,7 @@ FOR /L %%n in (1,1,16) DO (
 )
 
 cd ../
-IF EXIST lep-backend (
-    del /f /s /q lep-backend 1>nul
-    rmdir /s /q lep-backend
-)
+if exist lep-backend rmdir /s /q lep-backend
 
 printf "1) CLONING FROM REPOSITORY\n\n"
 
