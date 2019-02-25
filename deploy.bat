@@ -26,7 +26,7 @@ FOR /L %%n in (1,1,16) DO (
     sleep 0.1
 )
 
-cd C:\dev
+cd ../
 IF EXIST lep-backend (
     del /f /s /q lep-backend 1>nul
     rmdir /s /q lep-backend
