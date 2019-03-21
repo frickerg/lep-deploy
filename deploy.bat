@@ -27,19 +27,19 @@ FOR /L %%n in (1,1,16) DO (
 )
 
 cd ../
-if exist lep-backend rmdir /s /q lep-backend
+if exist lep-demonstrator rmdir /s /q lep-demonstrator
 
 printf "1) CLONING FROM REPOSITORY\n\n"
 
 sleep 1
-git clone git@gitlab.ti.bfh.ch:fricg2/lep-backend.git
-cd lep-backend
+git clone git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
+cd lep-demonstrator
 
 sleep 1
 printf "\n2) BUILDING PACKAGES\n\n"
 
 sleep 1
-call npm install
+call npm run deploy
 GOTO:End
 
 :spinner
