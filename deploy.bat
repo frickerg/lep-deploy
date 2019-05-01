@@ -29,25 +29,29 @@ for /l %%n in (1,1,16) do (
 if [%1]==[] goto:Cancel
 
 cd ..
-if exist lep-demonstrator rmdir /s /q lep-demonstrator
+if not exist lep-demonstrator (
+	call git clone -b deployment git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
+)
 
-printf "1) CLONING FROM REPOSITORY\n\n"
+printf "1) RETRIEVING LATEST VERSION FROM REPOSITORY\n\n"
+
 sleep 1
-
+cd lep-demonstrator
 if %1 == dev (
-	git clone -b develop git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
+	call git checkout deployment
 ) else if %1 == prod (
-	git clone git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
+	call git checkout deployment
 ) else (
 	goto:Cancel
 )
-
-cd lep-demonstrator
+call git branch
 
 sleep 1
 printf "\n2) BUILDING PACKAGES\n\n"
 
 sleep 1
+call npm install
+call npm run package:%1
 call npm run deploy:%1
 goto:End
 
