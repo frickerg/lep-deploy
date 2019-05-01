@@ -30,7 +30,7 @@ if [%1]==[] goto:Cancel
 
 cd ..
 if not exist lep-demonstrator (
-	call git clone -b deployment git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
+	call git clone git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
 )
 
 printf "\n1) RETRIEVING LATEST VERSION FROM REPOSITORY\n\n"
@@ -50,7 +50,7 @@ sleep 1
 printf "\n2) BUILDING PACKAGES\n\n"
 
 sleep 1
-call npm run cleanup:predeploy
+call npm run cleanup:build
 call npm install
 call npm run package:%1
 call npm run deploy:%1
