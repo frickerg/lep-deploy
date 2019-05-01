@@ -34,9 +34,13 @@ if exist lep-demonstrator rmdir /s /q lep-demonstrator
 printf "1) CLONING FROM REPOSITORY\n\n"
 sleep 1
 
-if %1 == dev (git clone -b develop git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git)
-else if %1 == prod (git clone git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git)
-else (goto:Cancel)
+if %1 == dev (
+	git clone -b develop git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
+) else if %1 == prod (
+	git clone git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
+) else (
+	goto:Cancel
+)
 
 cd lep-demonstrator
 
