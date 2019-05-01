@@ -13,34 +13,45 @@
 
 @echo off
 for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
-    @echo(%%A
-    sleep 0.1
+	@echo(%%A
+	sleep 0.1
 )
 
 @echo off
 setlocal EnableDelayedExpansion
 for /f %%a in ('copy /Z "%~dpf0" nul') do set "CR=%%a"
 
-FOR /L %%n in (1,1,16) DO (
-    call :spinner
-    sleep 0.1
+for /l %%n in (1,1,16) do (
+	call :spinner
+	sleep 0.1
 )
 
-cd ../
+if [%1]==[] goto:Cancel
+
+cd ..
 if exist lep-demonstrator rmdir /s /q lep-demonstrator
 
 printf "1) CLONING FROM REPOSITORY\n\n"
-
 sleep 1
-git clone git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
+
+if %1 == dev (git clone -b develop git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git)
+else if %1 == prod (git clone git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git)
+else (goto:Cancel)
+
 cd lep-demonstrator
 
 sleep 1
 printf "\n2) BUILDING PACKAGES\n\n"
 
 sleep 1
-call npm run deploy
-GOTO:End
+call npm run deploy:%1
+goto:End
+
+:Cancel
+echo 'ERROR!'
+echo 'the environment was not set correctly'
+echo 'check the parameter for %0 in your CI script!'
+exit /b -1
 
 :spinner
 set /a "spinner=(spinner + 1) %% 4"
