@@ -50,7 +50,9 @@ sleep 1
 printf "\n2) BUILDING PACKAGES\n\n"
 
 sleep 1
-call npm run cleanup:build
+if exist build\dist rmdir /s /q build\dist
+if exist node_modules rmdir /s /q node_modules
+
 call npm install
 call npm run package:%1
 call npm run deploy:%1
