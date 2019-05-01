@@ -64,4 +64,4 @@ set "spinChars=\|/-"
 exit /b
 
 :End
-PAUSE
+exit /b
