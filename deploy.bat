@@ -37,6 +37,8 @@ printf "\n\n1) RETRIEVING LATEST VERSION FROM REPOSITORY\n\n"
 
 sleep 1
 cd lep-demonstrator
+call git reset --hard
+call git fetch --all
 if %1 == prod (
 	call git checkout master
 ) else if %1 == dev (
@@ -45,9 +47,10 @@ if %1 == prod (
 	goto:Cancel
 )
 call git branch
+call git pull
 
 sleep 1
-printf "\n\n2) BUILDING PACKAGES\n"
+printf "\n2) BUILDING PACKAGES\n"
 
 sleep 1
 if exist build\dist rmdir /s /q build\dist
