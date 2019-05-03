@@ -37,10 +37,10 @@ printf "\n\n1) RETRIEVING LATEST VERSION FROM REPOSITORY\n\n"
 
 sleep 1
 cd lep-demonstrator
-if %1 == dev (
-	call git checkout deployment
-) else if %1 == prod (
-	call git checkout deployment
+if %1 == prod (
+	call git checkout master
+) else if %1 == dev (
+	call git checkout develop
 ) else (
 	goto:Cancel
 )
