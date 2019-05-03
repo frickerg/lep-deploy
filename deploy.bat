@@ -57,6 +57,7 @@ if exist build\dist rmdir /s /q build\dist
 if exist node_modules rmdir /s /q node_modules
 
 call npm install
+call npm run build:%1
 call npm run package:%1
 call npm run installer:%1
 goto:End
