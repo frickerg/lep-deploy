@@ -11,26 +11,32 @@
 ::: +--------------------------------------------------------+
 :::
 
-if [%2] == silent (
-	echo 'LEP Demonstrator Deployment Script'
-) else (
-	@echo off
-	for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
-		@echo(%%A
-		sleep 0.1
-	)
-
-	@echo off
-	setlocal EnableDelayedExpansion
-	for /f %%a in ('copy /Z "%~dpf0" nul') do set "CR=%%a"
-
-	for /l %%n in (1,1,16) do (
-		call :spinner
-		sleep 0.1
-	)
+@echo off
+if [%2] == [] goto:ttout
+if %2 == silent (
+	echo LEP Demonstrator Deployment Script
+	goto:main
 )
+
+:ttout
+@echo off
+for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
+	@echo(%%A
+	sleep 0.1
+)
+
+@echo off
+setlocal EnableDelayedExpansion
+for /f %%a in ('copy /Z "%~dpf0" nul') do set "CR=%%a"
+
+for /l %%n in (1,1,16) do (
+	call :spinner
+	sleep 0.1
+)
+
 if [%1]==[] goto:cancel
 
+:main
 cd ..
 if not exist lep-demonstrator (
 	call git clone git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
@@ -43,23 +49,23 @@ cd lep-demonstrator
 call git reset --hard
 call git fetch --all
 if %1 == prod (
-	call git checkout master
+	set BRANCH="master"
 ) else if %1 == dev (
-	call git checkout develop
+	set BRANCH="develop"
 ) else if %1 == test (
-	call git checkout testing
+	set BRANCH="testing"
 	%1 = dev
 ) else (
 	goto:cancel
 )
-call git branch
-call git pull || exit /b -1
-
+call git checkout %BRANCH%
+call git reset --hard origin/%BRANCH%
+call git status
 sleep 1
 printf "\n2) INSTALLING PACKAGES\n"
 
 sleep 1
-if exist build\dist rmdir /s /q build\dist
+if exist build rmdir /s /q build
 if exist node_modules rmdir /s /q node_modules
 
 call npm install || exit /b -1
