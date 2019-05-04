@@ -50,7 +50,7 @@ if %1 == prod (
 	goto:Cancel
 )
 call git branch
-call git pull
+call git pull || exit /b -1
 
 sleep 1
 printf "\n2) BUILDING PACKAGES\n"
@@ -60,9 +60,7 @@ if exist build\dist rmdir /s /q build\dist
 if exist node_modules rmdir /s /q node_modules
 
 call npm install
-call npm run build:%1
-call npm run package:%1
-call npm run installer:%1
+call npm run build:%1 && npm run package:%1 && npm run installer:%1 || exit /b -1
 goto:End
 
 :Cancel
@@ -78,4 +76,7 @@ set "spinChars=\|/-"
 exit /b
 
 :End
+if %ERRORLEVEL% NEQ 0 (
+	echo ERROR: Encountered fatal error while deploying.
+)
 exit /b
