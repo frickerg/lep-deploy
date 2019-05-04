@@ -11,22 +11,25 @@
 ::: +--------------------------------------------------------+
 :::
 
-@echo off
-for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
-	@echo(%%A
-	sleep 0.1
+if [%2] == silent (
+	echo 'LEP Demonstrator Deployment Script'
+) else (
+	@echo off
+	for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
+		@echo(%%A
+		sleep 0.1
+	)
+
+	@echo off
+	setlocal EnableDelayedExpansion
+	for /f %%a in ('copy /Z "%~dpf0" nul') do set "CR=%%a"
+
+	for /l %%n in (1,1,16) do (
+		call :spinner
+		sleep 0.1
+	)
 )
-
-@echo off
-setlocal EnableDelayedExpansion
-for /f %%a in ('copy /Z "%~dpf0" nul') do set "CR=%%a"
-
-for /l %%n in (1,1,16) do (
-	call :spinner
-	sleep 0.1
-)
-
-if [%1]==[] goto:Cancel
+if [%1]==[] goto:cancel
 
 cd ..
 if not exist lep-demonstrator (
@@ -47,23 +50,33 @@ if %1 == prod (
 	call git checkout testing
 	%1 = dev
 ) else (
-	goto:Cancel
+	goto:cancel
 )
 call git branch
 call git pull || exit /b -1
 
 sleep 1
-printf "\n2) BUILDING PACKAGES\n"
+printf "\n2) INSTALLING PACKAGES\n"
 
 sleep 1
 if exist build\dist rmdir /s /q build\dist
 if exist node_modules rmdir /s /q node_modules
 
-call npm install
-call npm run build:%1 && npm run package:%1 && npm run installer:%1 || exit /b -1
-goto:End
+call npm install || exit /b -1
 
-:Cancel
+sleep 1
+printf "\n3) BUILDING SOURCE CODE \n"
+call npm run build:%1 || exit /b -1
+
+sleep 1
+printf "\n4) PACKAGING WINDOWS EXECUTABLE \n"
+call npm run package:%1 || exit /b -1
+
+printf "\n4) CREATING INSTALLER \n"
+call npm run installer:%1 || exit /b -1
+goto:end
+
+:cancel
 echo 'ERROR!'
 echo 'the environment was not set correctly'
 echo 'check the parameter for %0 in your CI script!'
@@ -75,7 +88,7 @@ set "spinChars=\|/-"
 <nul set /p ".=Loading... !spinChars:~%spinner%,1!!CR!"
 exit /b
 
-:End
+:end
 if %ERRORLEVEL% NEQ 0 (
 	echo ERROR: Encountered fatal error while deploying.
 )
