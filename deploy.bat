@@ -43,6 +43,9 @@ if %1 == prod (
 	call git checkout master
 ) else if %1 == dev (
 	call git checkout develop
+) else if %1 == test (
+	call git checkout testing
+	%1 = dev
 ) else (
 	goto:Cancel
 )
