@@ -39,19 +39,19 @@ echo 3) PACKAGING WINDOWS EXECUTABLE
 call npm run package:%1 || goto:cancel
 
 echo 4) CREATING INSTALLER
-:: create installer for 'prod'
 if %1 == prod (
+	:: create installer for 'prod'
 	call npm run installer:%1 || goto:cancel
 ) else (
-	echo No need to create installer for %1
+	echo INFO: no need to create installer for %1
 )
 goto:end
 
 :cancel
 :: if anything goes wrong, the script will cancel here
 echo ERROR!
-echo The environment was not set correctly
-echo Check the parameter for %0 in your CI script!
+echo the environment was not set correctly
+echo check the process for %1 in your CI script!
 exit /b -1
 
 :end
