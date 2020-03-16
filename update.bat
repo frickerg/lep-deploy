@@ -8,16 +8,15 @@ if not exist lep-demonstrator (
 echo RETRIEVING LATEST VERSION FROM REPOSITORY
 cd lep-demonstrator
 
-git reset --hard
+call git fetch origin
+call git checkout .
 
 set branches=develop master
 (for %%b in (%branches%) do (
-	call git fetch origin %%b
-	git status -uno | find /i "branch is up to date"
+	call git checkout %%b
+	call git status -uno | find /i "branch is up to date"
 	if errorlevel 1 (
 		:: checkout current branch and reset repo to that branch
-		call git checkout %%b
-		call git reset --hard origin/%%b
 		call git status
 		if %%b == master (
 			call deploy.bat prod
