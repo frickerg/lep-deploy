@@ -1,13 +1,29 @@
-cd .. && cd lep-demonstrator
-
+cd ..
 @echo off
+:: clone the repository if it doesn't exist
+if not exist lep-demonstrator (
+	call git clone git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
+)
+
+echo RETRIEVING LATEST VERSION FROM REPOSITORY
+cd lep-demonstrator
+
+:: fetch on all branches
+call git fetch --all
+
 set branches=develop master
-(for %%branch in (%branches%) do (
-	call git checkout %%branch
+(for %%b in (%branches%) do (
+	:: checkout current branch and reset repo to that branch
+	call git checkout %%b
+
 	git status -uno | find /i "branch is up to date"
 	if errorlevel 1 (
-		call git reset --hard origin/%BRANCH%
+		call git reset --hard origin/%%b
 		call git status
-		call deploy.bat %%branch
+		if %%b == master (
+			call deploy.bat prod
+		) else if %%b == develop (
+			call deploy.bat dev
+		)
 	)
 ))
