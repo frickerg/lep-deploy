@@ -8,6 +8,8 @@ if not exist lep-demonstrator (
 echo RETRIEVING LATEST VERSION FROM REPOSITORY
 cd lep-demonstrator
 
+git reset --hard
+
 set branches=develop master
 (for %%b in (%branches%) do (
 	call git fetch origin %%b
