@@ -8,16 +8,13 @@ if not exist lep-demonstrator (
 echo RETRIEVING LATEST VERSION FROM REPOSITORY
 cd lep-demonstrator
 
-:: fetch on all branches
-call git fetch --all
-
 set branches=develop master
 (for %%b in (%branches%) do (
-	:: checkout current branch and reset repo to that branch
-	call git checkout %%b
-
+	call git fetch origin %%b
 	git status -uno | find /i "branch is up to date"
 	if errorlevel 1 (
+		:: checkout current branch and reset repo to that branch
+		call git checkout %%b
 		call git reset --hard origin/%%b
 		call git status
 		if %%b == master (
