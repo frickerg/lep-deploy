@@ -13,12 +13,15 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
 )
 
 :: save deploy path for later
-set DEPLOY_PATH=%CD%
+set DEPLOY_PATH=C:\LEP\lep-deploy
+cd %DEPLOY_PATH%
 
 cd ..
 :: clone the repository if it doesn't exist
 if not exist lep-demonstrator (
 	call git clone git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
+	call %DEPLOY_PATH%/deploy.bat prod
+	call %DEPLOY_PATH%/deploy.bat dev
 )
 
 :: change to project directory

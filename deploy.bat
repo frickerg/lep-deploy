@@ -17,6 +17,10 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
 	@echo(%%A
 )
 
+:: save deploy path for later
+set INSTALL_PATH=C:\LEP\lep-demonstrator
+cd %INSTALL_PATH%
+
 :: checks for arguments 'dev' or 'prod'
 :: if no arguments are given, the script will cancel
 if [%1]==[] goto:cancel
