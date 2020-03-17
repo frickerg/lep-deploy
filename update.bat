@@ -53,3 +53,4 @@ set branches=develop master
 
 :: change back to deploy path
 cd %DEPLOY_PATH%
+exit
