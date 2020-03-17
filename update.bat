@@ -41,6 +41,7 @@ set branches=develop master
 	:: check the status before calling the deployment script
 	call git status -uno | find /i "branch is up to date"
 	if errorlevel 1 (
+		call git pull
 		:: run deploy script for new build
 		if %%b == master (
 			call %DEPLOY_PATH%/deploy.bat prod

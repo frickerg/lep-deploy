@@ -27,8 +27,7 @@ if [%1]==[] goto:cancel
 
 echo 1) INSTALLING PACKAGES
 
-:: remove any remaining builds or modules
-if exist build rmdir /s /q build
+:: remove any remaining modules
 if exist node_modules rmdir /s /q node_modules
 
 :: install all npm packages
