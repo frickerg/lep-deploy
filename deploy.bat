@@ -21,6 +21,9 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
 set INSTALL_PATH=C:\LEP\lep-demonstrator
 cd %INSTALL_PATH%
 
+:: turn off angular analytics
+call ng analytics off
+
 :: checks for arguments 'dev' or 'prod'
 :: if no arguments are given, the script will cancel
 if [%1]==[] goto:cancel
