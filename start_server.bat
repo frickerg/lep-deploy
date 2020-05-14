@@ -17,8 +17,8 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
 call npm list -g forever || npm install -g forever
 
 :: save deploy path for later
-set DEPLOY_PATH=C:\LEP\lep-deploy
-cd %DEPLOY_PATH%
+set PROJECT_PATH=C:\LEP\lep-demonstrator
+cd %PROJECT_PATH%
 
 :: stop all forever daemons
 call forever stopall

@@ -17,7 +17,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
 	@echo(%%A
 )
 
-:: save deploy path for later
+:: save installation path for later
 set INSTALL_PATH=C:\LEP\lep-demonstrator
 cd %INSTALL_PATH%
 
