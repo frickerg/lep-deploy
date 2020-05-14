@@ -21,7 +21,7 @@ cd ..
 if not exist lep-demonstrator (
 	call git clone git@gitlab.ti.bfh.ch:fricg2/lep-demonstrator.git
 	call %DEPLOY_PATH%/deploy.bat prod
-	call %DEPLOY_PATH%/deploy.bat dev
+	exit
 )
 
 :: change to project directory
@@ -33,23 +33,15 @@ call git fetch origin
 :: reset local changes
 call git checkout .
 
-:: loop through array of branches
-set branches=develop master
-(for %%b in (%branches%) do (
-	:: checkout current branch
-	call git checkout %%b
-	:: check the status before calling the deployment script
-	call git status -uno | find /i "branch is up to date"
-	if errorlevel 1 (
-		call git pull
-		:: run deploy script for new build
-		if %%b == master (
-			call %DEPLOY_PATH%/deploy.bat prod
-		) else if %%b == develop (
-			call %DEPLOY_PATH%/deploy.bat dev
-		)
-	)
-))
+:: checkout develop branch
+call git checkout develop
+:: check the status before calling the deployment script
+call git status -uno | find /i "branch is up to date"
+if errorlevel 1 (
+	call git pull
+	:: run deploy script for new build
+	call %DEPLOY_PATH%/deploy.bat dev
+)
 
 :: change back to deploy path
 cd %DEPLOY_PATH%
