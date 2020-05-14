@@ -38,9 +38,14 @@ call git checkout develop
 :: check the status before calling the deployment script
 call git status -uno | find /i "branch is up to date"
 if errorlevel 1 (
+	:: stop all forever daemons
+	call forever stopall
+	:: pull latest changes
 	call git pull
 	:: run deploy script for new build
 	call %DEPLOY_PATH%/deploy.bat dev
+	:: restart server
+	call %DEPLOY_PATH%/start_server.bat dev
 )
 
 :: change back to deploy path
