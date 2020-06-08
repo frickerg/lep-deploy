@@ -27,6 +27,9 @@ if not exist lep-demonstrator (
 :: change to project directory
 cd lep-demonstrator
 
+:: set flag for git ask
+set GIT_ASK_YESNO=false
+
 :: check repository
 echo checking repository...
 call git fetch origin
@@ -50,4 +53,3 @@ if errorlevel 1 (
 
 :: change back to deploy path
 cd %DEPLOY_PATH%
-exit
