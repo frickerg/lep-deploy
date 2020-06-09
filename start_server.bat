@@ -12,9 +12,9 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
 	@echo(%%A
 )
 
-:: check if forever has been installed.
-:: if not, install it globally
-call npm list -g forever || npm install -g forever
+:: check if forever has been installed. If not, install it globally.
+:: latest version (>= 2.0.0) can be used if tested accordingly!
+call npm list -g forever@2.0.0 || npm install -g forever@2.0.0
 
 :: save deploy path for later
 set PROJECT_PATH=C:\LEP\lep-demonstrator
