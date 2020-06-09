@@ -61,6 +61,9 @@ if %1 == prod (
 ) else (
 	echo INFO: no need to create installer for %1
 )
+
+:: start the lepdemo daemon
+call forever start --uid "lepdemo" -c "npm run start:secure_server" -a ./
 goto:end
 
 :cancel
