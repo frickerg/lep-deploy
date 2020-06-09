@@ -17,6 +17,12 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
 	@echo(%%A
 )
 
+:: stop all forever daemons
+call forever stopall
+
+:: kill all node tasks for good measure
+taskkill /f /im node.exe
+
 :: elevate to admin
 set "params=%*"
 cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || ( echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B )
@@ -55,6 +61,9 @@ if %1 == prod (
 ) else (
 	echo INFO: no need to create installer for %1
 )
+
+:: start the lepdemo daemon
+call forever start --uid "lepdemo" -c "npm run start:secure_server" -a ./
 goto:end
 
 :cancel
