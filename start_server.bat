@@ -27,7 +27,7 @@ call forever stopall
 taskkill /f /im node.exe
 
 :: start the lepdemo daemon
-call forever start --uid "lepdemo" -c "npm run start:server" -a ./
+call forever start --uid "lepdemo" -c "npm run start:secure_server" -a ./
 
 :: byebye
 exit

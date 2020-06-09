@@ -17,6 +17,10 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do (
 	@echo(%%A
 )
 
+:: elevate to admin
+set "params=%*"
+cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || ( echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B )
+
 :: save installation path for later
 set INSTALL_PATH=C:\LEP\lep-demonstrator
 cd %INSTALL_PATH%
