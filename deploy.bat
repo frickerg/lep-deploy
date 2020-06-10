@@ -73,5 +73,5 @@ exit /b -1
 :end
 if %ERRORLEVEL% NEQ 0 (
 	echo ERROR: Encountered fatal error while deploying.
+	exit /b -1
 )
-exit /b
