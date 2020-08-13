@@ -8,6 +8,7 @@ The script assumes the client to be a Mac OS system, whereas the server is a Win
 On the Windows 10 VM:
 - OpenSSH
 - Git for Windows
+- Administrator privileges
 
 ## Grant SSH Access
 
@@ -32,7 +33,7 @@ On the Client
 - Generate an rsa key using `ssh-keygen -t rsa -b 2048`
 - `cat ~/.ssh/id_rsa.pub | clip` will copy your rsa public key
 - Paste rsa key from clipboard into GitLab SSH Keys (User Account Settings)
-- `ssh-add` to add your new Identity (the ssh-agent must be running for this)
+- `ssh-add` to add your new Identity (the Open SSH Service must be running)
 
 ## Deploy
 
